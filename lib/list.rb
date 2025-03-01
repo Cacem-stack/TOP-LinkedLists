@@ -8,25 +8,26 @@ class LinkedList
 
   def istail?(node)
     return true if node.nxt == nil
+    return false
   end
 
   def tail()
     node = @head
-    while node.nxt == !nil
-      node.next
+    while node.nxt != nil
+      node = node.nxt
     end
     return node
   end
 
   def is_empty?()
-    @head == nil
+    return @head == nil
   end
 
   def append(value)
     return @head = Node.new(value) if is_empty?
     node = @head
-    while node.nxt == !nil
-      node = @head.nxt
+    while node.nxt != nil
+    node = node.nxt
     end
     node.nxt = Node.new(value)
   end
@@ -40,9 +41,9 @@ class LinkedList
 
   def size()
     return 0 if is_empty?
+    index = 1
     node = @head
     while node.nxt != nil
-      index = 1
       node = node.nxt
       index += 1
     end
@@ -56,12 +57,14 @@ class LinkedList
   def at(index)
     return nil if is_empty?
     node = @head
-    while node.nxt == !nil
-      i = 0
+    i = 0
+    while node.nxt != nil
+      puts("index: #{index} i: #{i}")
       return node if index == i
       node = node.nxt
       i += 1
     end
+    return node if index == i
     return nil
   end
 
@@ -76,34 +79,32 @@ class LinkedList
   end
 
   def contains?(value)
-    iterate {|node| return true if node.val == val}
+    iterate {|node| return true if node.val == value}
     return false
   end
 
   def iterate()
     return nil if is_empty?
     node = @head
+    index = 0
     while node != nil
-      yield(node)
+      #yield({node => node, index => index })
+      yield(node, index)
       node = node.nxt
+      index += 1
     end
   end
 
   def find(value)
-    return nil if is_empty
-    index = 0
-    node = @head
-    while node.val != value
-      return node if node.val == value
-      node = node.nxt
-    end
+    return nil if is_empty?
+    iterate { |node, index| return index if node.val == value }
     return nil
   end
 
   def to_s()
     iterate { |node|
-      puts("(#{node.val}) -> ") if node.istail? == false
-      puts("(#{node.val}) -> (nil)") if node.istail? == true
+      print("(#{node.val}) -> ") if istail?(node) == false
+      print("(#{node.val}) -> (nil)\n\n") if istail?(node) == true
     }
   end
 end
