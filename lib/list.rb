@@ -6,6 +6,18 @@ class LinkedList
     @head = nil
   end
 
+  def istail?(node)
+    return true if node.nxt == nil
+  end
+
+  def tail()
+    node = @head
+    while node.nxt == !nil
+      node.next
+    end
+    return node
+  end
+
   def is_empty?()
     @head == nil
   end
@@ -20,27 +32,78 @@ class LinkedList
   end
 
   def prepend(value)
-
+    return @head = Node.new(value) if is_empty?
+    node = Node.new(value)
+    node.nxt = @head
+    @head = node
   end
 
   def size()
+    return 0 if is_empty?
+    node = @head
+    while node.nxt != nil
+      index = 1
+      node = node.nxt
+      index += 1
+    end
+    return index
   end
 
   def head()
+    @head
   end
 
   def at(index)
+    return nil if is_empty?
+    node = @head
+    while node.nxt == !nil
+      i = 0
+      return node if index == i
+      node = node.nxt
+      i += 1
+    end
+    return nil
   end
 
   def pop()
+    return nil if is_empty?
+    @head = nil if size == 1
+    node = @head
+    while node.nxt.nxt != nil
+      node = node.nxt
+    end
+    node.nxt = nil
   end
 
   def contains?(value)
+    iterate {|node| return true if node.val == val}
+    return false
+  end
+
+  def iterate()
+    return nil if is_empty?
+    node = @head
+    while node != nil
+      yield(node)
+      node = node.nxt
+    end
   end
 
   def find(value)
+    return nil if is_empty
+    index = 0
+    node = @head
+    while node.val != value
+      return node if node.val == value
+      node = node.nxt
+    end
+    return nil
   end
 
   def to_s()
+    iterate { |node|
+      puts("(#{node.val}) -> ") if node.istail? == false
+      puts("(#{node.val}) -> (nil)") if node.istail? == true
+    }
   end
 end
